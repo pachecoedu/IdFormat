@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMEI Formatter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Formatador de ID's</h1>
+        <form onsubmit="event.preventDefault(); onSubmit();">
+            <label for="imei_string">Adicione ID's no campo:</label><br>
+            <textarea id="imei_string" name="imei_string" rows="10" cols="50"></textarea><br>
+            <button>
+                Formatar
+                <div class="arrow-wrapper">
+                    <div class="arrow" type="submit" value="Formatar">
+                    </div>
+            </button>
+
+        </form>
+        <div class="formatados">
+            <h2>ID's Formatados:</h2>
+            <p id="formatted_string" onclick="copyToClipboard()"></p>
+            <button onclick="copyToClipboard()">Copy</button>
+        </div>
+    </div>
+    <script src="../Format.js"></script>
+</body>
+
+</html>
