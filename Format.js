@@ -1,13 +1,13 @@
 function formatImeiString(imeiString) {
     // Remove quebras de linha e espaços extras
     imeiString = imeiString.replace(/\n/g, " ").replace(/\r/g, " ");
-    
+
     // Divide a string em uma lista de IMEIs usando o espaço como separador
     let imeiList = imeiString.split(/\s+/);
-    
+
     // Junta a lista de IMEIs em uma string, separando por ", "
     let formattedImeiString = imeiList.join(", ");
-    
+
     return formattedImeiString;
 }
 
