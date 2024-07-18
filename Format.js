@@ -29,5 +29,15 @@ function copyToClipboard() {
     window.getSelection().addRange(range);
     document.execCommand("copy");
     window.getSelection().removeAllRanges();
-    alert("Formatted IMEI string copied to clipboard!");
+    
+    // Change button color and text
+    let copyButton = document.getElementById("copyButton");
+    copyButton.style.backgroundColor = "green";
+    copyButton.textContent = "Copiado!";
+    
+    // Optional: Change the button back after a delay
+    setTimeout(() => {
+        copyButton.style.backgroundColor = "";
+        copyButton.textContent = "Copiar";
+    }, 3000);
 }

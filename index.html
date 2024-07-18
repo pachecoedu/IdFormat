@@ -14,18 +14,17 @@
         <form onsubmit="event.preventDefault(); onSubmit();">
             <label for="imei_string">Adicione ID's no campo:</label><br>
             <textarea id="imei_string" name="imei_string" rows="10" cols="50"></textarea><br>
-            <button>
+            <button type="submit">
                 Formatar
                 <div class="arrow-wrapper">
-                    <div class="arrow" type="submit" value="Formatar">
-                    </div>
+                    <div class="arrow"></div>
+                </div>
             </button>
-
         </form>
         <div class="formatados">
             <h2>ID's Formatados:</h2>
             <p id="formatted_string" onclick="copyToClipboard()"></p>
-            <button onclick="copyToClipboard()">Copy</button>
+            <button id="copyButton" onclick="copyToClipboard()">Copy</button>
         </div>
     </div>
     <script src="./Format.js"></script>
