@@ -32,7 +32,10 @@ function formatPlacaString(imeiString) {
 function displayFormattedStrings(formattedStrings) {
     document.getElementById("formatted_string").innerText = formattedStrings;
 
-    document.querySelector('.formatados').classList.add('ativo');
+    const formattedSection = document.querySelector('.formatados');
+    if (formattedSection) {
+        formattedSection.classList.add('ativo');
+    }
 }
 
 function updateHistory(formattedStrings) {
