@@ -1,6 +1,7 @@
 const MAX_HISTORY_ITEMS = 3;
 let history = [];
 
+// Função para formatar o IMEI
 function formatImeiString(imeiString) {
     imeiString = imeiString.replace(/\r/g, ""); // Remove caracteres de retorno de carro
 
@@ -24,11 +25,13 @@ function formatImeiString(imeiString) {
     };
 }
 
+// Função para formatar a Placa
 function formatPlacaString(imeiString) {
     let lines = imeiString.split('\n').map(line => line.trim()).filter(line => line !== '');
     return "Placa: <strong>" + lines.join(', ') + "</strong>";
 }
 
+// Função para exibir as strings formatadas
 function displayFormattedStrings(formattedStrings) {
     document.getElementById("formatted_string").innerHTML = formattedStrings;
 
@@ -38,6 +41,7 @@ function displayFormattedStrings(formattedStrings) {
     }
 }
 
+// Função para atualizar o histórico
 function updateHistory(formattedStrings) {
     history.unshift(formattedStrings); // Adiciona a nova string formatada no histórico
 
@@ -51,10 +55,12 @@ function updateHistory(formattedStrings) {
     ).join('');
 }
 
+// Função para mostrar histórico
 function showHistory(index) {
     document.getElementById("formatted_string").innerHTML = history[index];
 }
 
+// Função chamada ao formatar os dados
 function onFormat(type) {
     let imeiString = document.getElementById("imei_string").value.trim();
     let formattedStrings;
@@ -70,6 +76,7 @@ function onFormat(type) {
     updateHistory(formattedStrings);
 }
 
+// Funções de edição do formato
 function onEditComma() {
     let imeiString = document.getElementById("imei_string").value;
 
@@ -94,6 +101,7 @@ function onEditSemicolon() {
     updateHistory(formattedString);
 }
 
+// Função para selecionar a opção de problema
 function onSelectOption(option) {
     let formattedStrings = "";
 
@@ -121,6 +129,7 @@ function onSelectOption(option) {
     updateHistory(formattedStrings);
 }
 
+// Função para copiar o conteúdo para a área de transferência
 function copyToClipboard() {
     let formattedString = document.getElementById("formatted_string").innerHTML;
 
@@ -140,3 +149,21 @@ function copyToClipboard() {
         copyButton.textContent = "Copiar";
     }, 3000);
 }
+
+// Adicionando os botões de seleção dinamicamente
+function addSelectButtons() {
+    const options = ['desconectado', 'indisponivel', 'configuracao'];
+    const container = document.getElementById('buttonsContainer'); // Supondo que você tenha um container no HTML
+
+    options.forEach(option => {
+        const button = document.createElement('button');
+        button.textContent = option.charAt(0).toUpperCase() + option.slice(1);
+        button.addEventListener('click', () => onSelectOption(option));
+        container.appendChild(button);
+    });
+}
+
+// Inicialização da página
+document.addEventListener('DOMContentLoaded', () => {
+    addSelectButtons();
+});
