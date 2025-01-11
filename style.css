@@ -31,20 +31,31 @@ body {
   align-items: center;
 }
 
-textarea {
+textarea,
+#formatted_string {
   padding: 10px;
   width: 100%;
-  height: 150px; /* Ajuste a altura conforme necessário */
-  overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
+  height: 150px;
+  overflow-y: auto;
   border: 1px solid #ccc;
   box-sizing: border-box;
-  resize: vertical; /* Permite redimensionar verticalmente */
-  white-space: pre-wrap; /* Mantém as quebras de linha */
+  resize: vertical;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+textarea {
+  height: 150px; /* Ajuste a altura conforme necessário */
+}
+
+#formatted_string {
+  max-height: 200px; /* Limita a altura máxima do campo */
+  background-color: #f9f9f9;
 }
 
 .botoes {
   display: flex;
-  flex-direction: row;
   gap: 1em;
   margin-top: 10px;
 }
@@ -55,7 +66,6 @@ button {
   --hover-color: #008f7c;
   --arrow-width: 10px;
   --arrow-stroke: 2px;
-  box-sizing: border-box;
   border: 0;
   border-radius: 20px;
   color: var(--secondary-color);
@@ -63,10 +73,10 @@ button {
   background: var(--primary-color);
   display: flex;
   justify-content: center;
-  transition: 0.2s background;
   align-items: center;
   gap: 0.6em;
   font-weight: bold;
+  transition: 0.2s background;
 }
 
 button .arrow-wrapper {
@@ -76,7 +86,6 @@ button .arrow-wrapper {
 }
 
 button .arrow {
-  margin-top: 1px;
   width: var(--arrow-width);
   background: var(--primary-color);
   height: var(--arrow-stroke);
@@ -86,14 +95,12 @@ button .arrow {
 
 button .arrow::before {
   content: "";
-  box-sizing: border-box;
   position: absolute;
   border: solid var(--secondary-color);
   border-width: 0 var(--arrow-stroke) var(--arrow-stroke) 0;
   display: inline-block;
   top: -3px;
   right: 3px;
-  transition: 0.2s;
   padding: 3px;
   transform: rotate(-45deg);
 }
@@ -111,30 +118,33 @@ button:hover .arrow:before {
   right: 0;
 }
 
-/* Estilo para a área de ID's Formatados */
 .formatados {
   display: none;
+  width: 100%;
+  max-width: 100%; /* Garantir que o texto não ultrapasse os limites */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .formatados.ativo {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
 }
 
-#formatted_string {
-  display: block;
-  width: 100%;
-  margin-bottom: 10px;
-  height: 150px; /* Ajuste a altura conforme necessário */
-  overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
-  white-space: pre-wrap; /* Mantém as quebras de linha */
-  border: 1px solid #ccc;
-  padding: 10px;
-  background-color: #f9f9f9;
-  box-sizing: border-box;
+#copyButton {
+  margin-top: 10px;
+  background-color: #00AE97;
+  color: #f9fbfc;
+  padding: 0.8em 1.5em;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#copyButton:hover {
+  background-color: #008f7c;
 }
 
 .historico {
@@ -147,7 +157,6 @@ button:hover .arrow:before {
 
 .historico-buttons {
   display: flex;
-  flex-direction: row;
   gap: 10px;
 }
 

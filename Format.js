@@ -26,7 +26,7 @@ function formatImeiString(imeiString) {
 
 function formatPlacaString(imeiString) {
     let lines = imeiString.split('\n').map(line => line.trim()).filter(line => line !== '');
-    return "Placa: " + lines.join(', ');
+    return "Placa: <strong>" + lines.join(', ') + "</strong>";
 }
 
 function displayFormattedStrings(formattedStrings) {
@@ -39,15 +39,12 @@ function displayFormattedStrings(formattedStrings) {
 }
 
 function updateHistory(formattedStrings) {
-    // Add the new formatted string to the history
-    history.unshift(formattedStrings);
+    history.unshift(formattedStrings); // Adiciona a nova string formatada no histórico
 
-    // Trim the history to the last MAX_HISTORY_ITEMS items
     if (history.length > MAX_HISTORY_ITEMS) {
-        history.pop();
+        history.pop(); // Remove o item mais antigo se o histórico exceder o limite
     }
 
-    // Update the history list in the HTML
     const historyList = document.getElementById("history_list");
     historyList.innerHTML = history.map((item, index) => 
         `<button class="historico-btn" onclick="showHistory(${index})">Histórico ${MAX_HISTORY_ITEMS - index}</button>`
@@ -55,19 +52,18 @@ function updateHistory(formattedStrings) {
 }
 
 function showHistory(index) {
-    // Display the selected item from the history
     document.getElementById("formatted_string").innerHTML = history[index];
 }
 
 function onFormat(type) {
-    let imeiString = document.getElementById("imei_string").value;
+    let imeiString = document.getElementById("imei_string").value.trim();
     let formattedStrings;
 
     if (type === 'placa') {
         formattedStrings = formatPlacaString(imeiString);
     } else {
         let imeiFormatted = formatImeiString(imeiString);
-        formattedStrings = `${imeiFormatted.row1}\n${imeiFormatted.row2}\n${imeiFormatted.row3}`;
+        formattedStrings = `${imeiFormatted.row1}<br>${imeiFormatted.row2}<br>${imeiFormatted.row3}`;
     }
 
     displayFormattedStrings(formattedStrings);
@@ -77,11 +73,10 @@ function onFormat(type) {
 function onEditComma() {
     let imeiString = document.getElementById("imei_string").value;
 
-    // Mantém as colunas separadas por espaço, mas converte as linhas para vírgulas
     let formattedString = imeiString.split('\n').map(line => {
-        let columns = line.trim().split(/\s+/); // Divide a linha em colunas usando o espaço
-        return columns.join(','); // Junta as colunas com vírgula
-    }).join(','); // Junta as linhas com vírgula
+        let columns = line.trim().split(/\s+/);
+        return columns.join(',');
+    }).join(',');
 
     displayFormattedStrings(formattedString);
     updateHistory(formattedString);
@@ -90,21 +85,47 @@ function onEditComma() {
 function onEditSemicolon() {
     let imeiString = document.getElementById("imei_string").value;
 
-    // Mantém as colunas separadas por espaço, mas converte as linhas para ponto e vírgula
     let formattedString = imeiString.split('\n').map(line => {
-        let columns = line.trim().split(/\s+/); // Divide a linha em colunas usando o espaço
-        return columns.join(';'); // Junta as colunas com ponto e vírgula
-    }).join(';'); // Junta as linhas com ponto e vírgula
+        let columns = line.trim().split(/\s+/);
+        return columns.join(';');
+    }).join(';');
 
     displayFormattedStrings(formattedString);
     updateHistory(formattedString);
 }
 
+function onSelectOption(option) {
+    let formattedStrings = "";
+
+    // Pega as strings formatadas já existentes
+    let imeiString = document.getElementById("imei_string").value;
+    let imeiFormatted = formatImeiString(imeiString);
+    let formattedImei = `${imeiFormatted.row1}\n${imeiFormatted.row2}\n${imeiFormatted.row3}`;
+
+    // Adiciona a informação do problema e descrição dependendo da opção selecionada
+    if (option === 'desconectado') {
+        formattedStrings = `${formattedImei}<br><strong>Qual problema encontrado:</strong> Dispositivo desconectado ou apresentando desconexões desde<br>
+<strong>Descrição do que foi feito:</strong> Alinhamos o cliente sobre as desconexões do dispositivo e pedimos para validar as condições do veículo, caso esteja tudo certo e o dispositivo continuar sem comunicar seguiremos com a troca.<br>`;
+    } else if (option === 'indisponivel') {
+        formattedStrings = `${formattedImei}<br><strong>Qual problema encontrado:</strong> Dispositivo se encontra indisponível desde<br>
+<strong>Descrição do que foi feito:</strong> Reset + envio de comandos seguiremos acompanhando pelas próximas 72h, caso não voltem a comunicar seguiremos com a troca.<br>`;
+    } else if (option === 'configuracao') {
+        formattedStrings = `${formattedImei}<br><strong>Qual problema encontrado:</strong> Dispositivo se encontra com a configuração inadequada/desatualizada.<br>
+<strong>Descrição do que foi feito:</strong> Foi ajustada/atualizada a configuração do dispositivo. Estamos aguardando período de calibração e pedimos para validar se o problema persiste após o ajuste.<br>`;
+    }
+
+    // Remove qualquer quebra de linha desnecessária
+    formattedStrings = formattedStrings.replace(/\n\s*\n/g, '\n').trim();
+
+    displayFormattedStrings(formattedStrings);
+    updateHistory(formattedStrings);
+}
+
 function copyToClipboard() {
-    let formattedString = document.getElementById("formatted_string").innerText;
+    let formattedString = document.getElementById("formatted_string").innerHTML;
 
     let textarea = document.createElement("textarea");
-    textarea.value = formattedString;
+    textarea.value = formattedString.replace(/<br>/g, "\n").replace(/<[^>]+>/g, ""); // Remove tags HTML
     document.body.appendChild(textarea);
     textarea.select();
     document.execCommand("copy");
